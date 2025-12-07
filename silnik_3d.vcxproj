@@ -78,8 +78,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\SDL2\include;$(IncludePath)</IncludePath>
-    <ReferencePath>C:\SDL2\lib\x64;$(ReferencePath)</ReferencePath>
+    <IncludePath>G:\SDL2\include;C:\SDL2\include;$(IncludePath)</IncludePath>
+    <ReferencePath>G:\SDL2\lib\x64;C:\SDL2\lib\x64;$(ReferencePath)</ReferencePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

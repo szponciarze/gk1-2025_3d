@@ -56,6 +56,7 @@ bool Engine::init(const std::string& windowtitle, int x, int y, int w, int h, bo
 
     isRunning = true;
     return true;
+
 }
 
 void Engine::mainLoop() {
@@ -97,7 +98,12 @@ void Engine::kbmEvents() {
                 projectionMode = 1;
                 std::cout << "Rzutowanie ortograficzne\n";
                 break;
+
+            case SDLK_c:
+                clearScreen(1.0f, 0.0f, 0.0f, 1.0f);
+                break;
             }
+
         }
 
         if (mouseOn && e.type == SDL_MOUSEBUTTONDOWN) {
@@ -134,4 +140,20 @@ void Engine::setOrtho(float left, float right, float bottom, float top, float ne
     glOrtho(left, right, bottom, top, nearZ, farZ);
 }
 
-//clean
+void Engine::clearScreen(float r, float g, float b, float a) {
+    glClearColor(r, g, b, a);
+}
+
+void Engine::clean() {
+    if (glContext) {
+        SDL_GL_DeleteContext(glContext);
+        glContext = nullptr;
+    }
+
+    if (window) {
+        SDL_DestroyWindow(window);
+        window = nullptr;
+    }
+
+    SDL_Quit();
+}
