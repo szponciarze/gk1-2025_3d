@@ -3,6 +3,14 @@
 #include "glm/glm/glm.hpp"
 #include "glm/glm/gtx/transform.hpp"
 #include "glm/glm/gtc/type_ptr.hpp"
+#include "Primitive.h"
+#include "Point.h"
+#include "Line.h"
+#include "Polylines.h"
+#include "Triangle.h"
+#include "TriangleStrip.h"
+#include "TriangleFan.h"
+#include "Quad.h"
 
 
 
@@ -23,7 +31,7 @@ bool Engine::init(const std::string& windowtitle, int x, int y, int w, int h, bo
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
@@ -121,6 +129,76 @@ void Engine::renderFrame() {
         setOrtho(-10, 10, -10, 10, -100, 100);
 
     //rysowanie
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glTranslatef(0, 0, -10);
+
+    // Punkt
+    glPushMatrix();
+    glTranslatef(-6, 4, 0);
+    Point p(Vertex({ 0,0,0 }, { 1,0,0 }));
+    p.draw();
+    glPopMatrix();
+
+    // Linia 
+    glPushMatrix();
+    glTranslatef(5, 4, 0);
+    Line l(Vertex({ -2,1,0 }, { 1,0,0 }), Vertex({ 2,0,0 }, { 1,0,0 }));
+    l.draw();
+    glPopMatrix();
+
+    // Krzywa linia
+    glPushMatrix();
+    glTranslatef(-6, -4, 0);
+    std::vector<Vertex> polyVerts = {
+        Vertex({-2,-1,0},{0,1,0}),
+        Vertex({0,2,0},{0,1,0}),
+        Vertex({2,-1,0},{0,1,0})
+    };
+    Polylines pl(polyVerts);
+    pl.draw();
+    glPopMatrix();
+
+    // Trójk¹t
+    glPushMatrix();
+    glTranslatef(-3, 4, 0);
+    Triangle t(Vertex({ -1,-1,0 }, { 1,0,0 }), Vertex({ 1,2,0 }, { 1,0,0 }), Vertex({ 1,-1,0 }, { 1,0,0 }));
+    t.draw();
+    glPopMatrix();
+
+    // Pasek trójk¹tów
+    glPushMatrix();
+    glTranslatef(2, 2, 0);
+    std::vector<Vertex> stripVerts = {
+        Vertex({-1,-1,0},{0,1,0}),
+        Vertex({-0.5,2,0},{0,1,0}),
+        Vertex({0,-1,0},{0,1,0}),
+        Vertex({0.5,2,0},{0,1,0})
+    };
+    TriangleStrip ts(stripVerts);
+    ts.draw();
+    glPopMatrix();
+
+    // Wachlarz trójk¹tów
+    glPushMatrix();
+    glTranslatef(6, -4, 0);
+    std::vector<Vertex> fanVerts = {
+        Vertex({0,0,0},{1,0,0}),
+        Vertex({-1,0,0},{1,0,0}),
+        Vertex({1,1,0},{1,0,0}),
+        Vertex({1,-1,0},{1,0,0}),
+        Vertex({-1,-1,0},{1,0,0})
+    };
+    TriangleFan tf(fanVerts);
+    tf.draw();
+    glPopMatrix();
+
+    // Kwadrat
+    glPushMatrix();
+    glTranslatef(0, 0, 0);
+    Quad q(Vertex({ -1,-1,0 }, { 0,0,1 }), Vertex({ -1,1,0 }, { 0,0,1 }), Vertex({ 1,1,0 }, { 0,0,1 }), Vertex({ 1,-1,0 }, { 0,0,1 }));
+    q.draw();
+    glPopMatrix();
 
     SDL_GL_SwapWindow(window);
 }

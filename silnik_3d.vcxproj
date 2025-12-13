@@ -20,6 +20,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="Line.h" />
+    <ClInclude Include="Point.h" />
+    <ClInclude Include="Polylines.h" />
+    <ClInclude Include="Primitive.h" />
+    <ClInclude Include="Quad.h" />
+    <ClInclude Include="Triangle.h" />
+    <ClInclude Include="TriangleFan.h" />
+    <ClInclude Include="TriangleStrip.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp" />
