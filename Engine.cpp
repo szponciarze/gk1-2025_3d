@@ -11,6 +11,7 @@
 #include "TriangleStrip.h"
 #include "TriangleFan.h"
 #include "Quad.h"
+#include "Cube.h"
 
 
 
@@ -195,9 +196,17 @@ void Engine::renderFrame() {
 
     // Kwadrat
     glPushMatrix();
-    glTranslatef(0, 0, 0);
+    glTranslatef(-3, 0, 0);
     Quad q(Vertex({ -1,-1,0 }, { 0,0,1 }), Vertex({ -1,1,0 }, { 0,0,1 }), Vertex({ 1,1,0 }, { 0,0,1 }), Vertex({ 1,-1,0 }, { 0,0,1 }));
     q.draw();
+    glPopMatrix();
+
+    // Kostka
+    glPushMatrix();
+    glTranslatef(0, 0, -5);
+    glRotatef(SDL_GetTicks() * 0.05f, 2, 1, 0);
+    Cube cube(2.0f);
+    cube.draw();
     glPopMatrix();
 
     SDL_GL_SwapWindow(window);
