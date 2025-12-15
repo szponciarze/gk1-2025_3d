@@ -5,7 +5,6 @@
 
 class Cube : public Primitive {
 private:
-    std::vector<glm::vec3> normals;
     std::vector<GLuint> indices;
 
 public:
