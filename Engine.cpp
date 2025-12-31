@@ -111,6 +111,18 @@ void Engine::kbmEvents() {
             case SDLK_c:
                 clearScreen(1.0f, 0.0f, 0.0f, 1.0f);
                 break;
+            case SDLK_UP:
+                camera.move({ 0,0.5f,0 });
+                    break;
+            case SDLK_LEFT:
+                camera.move({ -0.5f,0,0 });
+                break;
+            case SDLK_DOWN:
+                camera.move({ 0,-0.5f,0 });
+                break;
+            case SDLK_RIGHT:
+                camera.move({ 0.5f,0,0 });
+                break;
             }
 
         }
@@ -131,83 +143,24 @@ void Engine::renderFrame() {
 
     //rysowanie
     glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glTranslatef(0, 0, -10);
-
-    // Punkt
-    glPushMatrix();
-    glTranslatef(-6, 4, 0);
-    Point p(Vertex({ 0,0,0 }, { 1,0,0 }));
-    p.draw();
-    glPopMatrix();
-
-    // Linia 
-    glPushMatrix();
-    glTranslatef(5, 4, 0);
-    Line l(Vertex({ -2,1,0 }, { 1,0,0 }), Vertex({ 2,0,0 }, { 1,0,0 }));
-    l.draw();
-    glPopMatrix();
-
-    // Krzywa linia
-    glPushMatrix();
-    glTranslatef(-6, -4, 0);
-    std::vector<Vertex> polyVerts = {
-        Vertex({-2,-1,0},{0,1,0}),
-        Vertex({0,2,0},{0,1,0}),
-        Vertex({2,-1,0},{0,1,0})
-    };
-    Polylines pl(polyVerts);
-    pl.draw();
-    glPopMatrix();
-
-    // Trójk¹t
-    glPushMatrix();
-    glTranslatef(-3, 4, 0);
-    Triangle t(Vertex({ -1,-1,0 }, { 1,0,0 }), Vertex({ 1,2,0 }, { 1,0,0 }), Vertex({ 1,-1,0 }, { 1,0,0 }));
-    t.draw();
-    glPopMatrix();
-
-    // Pasek trójk¹tów
-    glPushMatrix();
-    glTranslatef(2, 2, 0);
-    std::vector<Vertex> stripVerts = {
-        Vertex({-1,-1,0},{0,1,0}),
-        Vertex({-0.5,2,0},{0,1,0}),
-        Vertex({0,-1,0},{0,1,0}),
-        Vertex({0.5,2,0},{0,1,0})
-    };
-    TriangleStrip ts(stripVerts);
-    ts.draw();
-    glPopMatrix();
-
-    // Wachlarz trójk¹tów
-    glPushMatrix();
-    glTranslatef(6, -4, 0);
-    std::vector<Vertex> fanVerts = {
-        Vertex({0,0,0},{1,0,0}),
-        Vertex({-1,0,0},{1,0,0}),
-        Vertex({1,1,0},{1,0,0}),
-        Vertex({1,-1,0},{1,0,0}),
-        Vertex({-1,-1,0},{1,0,0})
-    };
-    TriangleFan tf(fanVerts);
-    tf.draw();
-    glPopMatrix();
-
-    // Kwadrat
-    glPushMatrix();
-    glTranslatef(-3, 0, 0);
-    Quad q(Vertex({ -1,-1,0 }, { 0,0,1 }), Vertex({ -1,1,0 }, { 0,0,1 }), Vertex({ 1,1,0 }, { 0,0,1 }), Vertex({ 1,-1,0 }, { 0,0,1 }));
-    q.draw();
-    glPopMatrix();
+    glm::mat4 view = camera.getViewMatrix();
+    camera.setPostion({ 0,2,15 });
+    glLoadMatrixf(glm::value_ptr(view));
 
     // Kostka
-    glPushMatrix();
-    glTranslatef(0, 0, -5);
-    glRotatef(SDL_GetTicks() * 0.05f, 2, 1, 0);
-    Cube cube(2.0f);
-    cube.draw();
-    glPopMatrix();
+    Cube c1(3.0f);
+    c1.rotate(SDL_GetTicks() * 0.05f, { 1,1,0 });
+    c1.draw();
+
+    Cube c2(2.0f);
+    c2.rotate(SDL_GetTicks() * 0.05f, { 0,1,0 });
+    c2.translate({ 10, 0, 0 });
+    c2.draw();
+
+    Cube c3(1.0f);
+    c3.rotate(SDL_GetTicks() * 0.1f, { 0,1,0 });
+    c3.translate({ 10, 0, 0 });
+    c3.draw();
 
     SDL_GL_SwapWindow(window);
 }

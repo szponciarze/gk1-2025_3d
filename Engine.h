@@ -3,6 +3,7 @@
 #include <SDL_opengl.h>
 #include <string>
 #include <iostream>
+#include "Camera.h"
 
 
 class Engine {
@@ -22,6 +23,7 @@ private:
     Uint32 frameTime;
     Uint32 lastTime;
     int projectionMode; //0-perspektywiczne 1-ortograficzne
+    Camera camera;
 
 
 public:

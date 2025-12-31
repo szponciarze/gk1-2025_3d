@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
-#include <glm/glm/glm.hpp>
 #include <SDL_opengl.h>
+#include "ShapeObject.h"
 
 struct Vertex {
     glm::vec3 position;
@@ -9,9 +9,9 @@ struct Vertex {
     Vertex(const glm::vec3& pos, const glm::vec3& col) : position(pos), color(col) {}
 };
 
-class Primitive {
+class Primitive : public ShapeObject {
 protected:
     std::vector<Vertex> vertices;
 public:
-    virtual void draw() = 0;
+    virtual ~Primitive() = default;
 };

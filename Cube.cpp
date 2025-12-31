@@ -26,6 +26,8 @@ Cube::Cube(float size) {
 }
 
 void Cube::draw() {
+    glPushMatrix();
+    glMultMatrixf(glm::value_ptr(modelMatrix));
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
 
@@ -52,4 +54,6 @@ void Cube::draw() {
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_COLOR_ARRAY);
+
+    glPopMatrix();
 }
