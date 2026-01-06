@@ -24,6 +24,7 @@ private:
     Uint32 lastTime;
     int projectionMode; //0-perspektywiczne 1-ortograficzne
     Camera camera;
+    int shadingMode;
 
 
 public:
@@ -40,6 +41,8 @@ public:
 
     void setPerspective(float fov, float nearZ, float farZ);
     void setOrtho(float left, float right, float bottom, float top, float nearZ, float farZ);
+
+    void setupLight();
 
 
     void clean();

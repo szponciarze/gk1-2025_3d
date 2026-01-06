@@ -5,8 +5,14 @@
 
 struct Vertex {
     glm::vec3 position;
-    glm::vec3 color;
-    Vertex(const glm::vec3& pos, const glm::vec3& col) : position(pos), color(col) {}
+    glm::vec3 normal;  
+    glm::vec3 color; 
+
+    Vertex(const glm::vec3& pos,
+        const glm::vec3& norm,
+        const glm::vec3& col)
+        : position(pos), normal(norm), color(col) {
+    }
 };
 
 class Primitive : public ShapeObject {

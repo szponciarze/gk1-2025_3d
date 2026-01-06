@@ -63,6 +63,14 @@ bool Engine::init(const std::string& windowtitle, int x, int y, int w, int h, bo
 
     glClearColor(0.1f, 0.15f, 0.2f, 1.0f);
 
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_NORMALIZE);
+    glEnable(GL_COLOR_MATERIAL);
+    glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+
+    shadingMode = 1;
+
     isRunning = true;
     return true;
 
@@ -123,7 +131,20 @@ void Engine::kbmEvents() {
             case SDLK_RIGHT:
                 camera.move({ 0.5f,0,0 });
                 break;
+
+            case SDLK_f:
+                shadingMode = 0;
+                glShadeModel(GL_FLAT);
+                std::cout << "Cieniowanie: FLAT\n";
+                break;
+
+            case SDLK_g:
+                shadingMode = 1;
+                glShadeModel(GL_SMOOTH);
+                std::cout << "Cieniowanie: SMOOTH (Gouraud)\n";
+                break;
             }
+
 
         }
 
@@ -133,33 +154,37 @@ void Engine::kbmEvents() {
     }
 }
 
-void Engine::renderFrame() {
+void Engine::renderFrame()
+{
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glShadeModel(shadingMode == 0 ? GL_FLAT : GL_SMOOTH);
 
     if (projectionMode == 0)
         setPerspective(70.0f, 0.1f, 1000.0f);
     else
         setOrtho(-10, 10, -10, 10, -100, 100);
 
-    //rysowanie
+
     glMatrixMode(GL_MODELVIEW);
+    camera.setPostion({ 0, 2, 15 });
     glm::mat4 view = camera.getViewMatrix();
-    camera.setPostion({ 0,2,15 });
     glLoadMatrixf(glm::value_ptr(view));
 
-    // Kostka
+    setupLight();
+
     Cube c1(3.0f);
     c1.rotate(SDL_GetTicks() * 0.05f, { 1,1,0 });
     c1.draw();
 
     Cube c2(2.0f);
-    c2.rotate(SDL_GetTicks() * 0.05f, { 0,1,0 });
     c2.translate({ 10, 0, 0 });
+    c2.rotate(SDL_GetTicks() * 0.05f, { 0,1,0 });
     c2.draw();
 
     Cube c3(1.0f);
+    c3.translate({ -10, 0, 0 });
     c3.rotate(SDL_GetTicks() * 0.1f, { 0,1,0 });
-    c3.translate({ 10, 0, 0 });
     c3.draw();
 
     SDL_GL_SwapWindow(window);
@@ -179,6 +204,24 @@ void Engine::setOrtho(float left, float right, float bottom, float top, float ne
     glLoadIdentity();
     glOrtho(left, right, bottom, top, nearZ, farZ);
 }
+
+void Engine::setupLight()
+{
+    GLfloat lightPos[] = { 30.0f, 30.0f, 30.0f, 1.0f };
+    GLfloat lightDiffuse[] = { 0.8f, 0.8f, 0.8f, 1.0f };
+    GLfloat lightSpecular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+    GLfloat lightAmbient[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+
+    glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, lightSpecular);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
+
+    glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.0f);
+    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.02f);
+    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.001f);
+}
+
 
 void Engine::clearScreen(float r, float g, float b, float a) {
     glClearColor(r, g, b, a);
