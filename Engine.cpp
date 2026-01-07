@@ -15,7 +15,7 @@
 
 
 
-bool Engine::init(const std::string& windowtitle, int x, int y, int w, int h, bool Fullscreen, bool mouseOn, bool keyboardOn, int targetFPS, bool depthBufferOn)
+bool Engine::init(const std::string& windowtitle, int x, int y, int w, int h, bool Fullscreen, bool mouseOn, bool keyboardOn, int targetFPS, bool depthBufferOn, int BufferingMode)
 {
     this->width = w;
     this->height = h;
@@ -24,6 +24,7 @@ bool Engine::init(const std::string& windowtitle, int x, int y, int w, int h, bo
     this->keyboardOn = keyboardOn;
     this->targetFPS = targetFPS;
     this->frameDelay = 1000 / targetFPS;
+    this->BufferingMode = (BufferingMode < 2) ? 2 : 3;
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) != 0) {
         std::cerr << "SDL Init error: " << SDL_GetError() << std::endl;
@@ -51,7 +52,19 @@ bool Engine::init(const std::string& windowtitle, int x, int y, int w, int h, bo
         return false;
     }
 
-    SDL_GL_SetSwapInterval(1); // vsync
+    glewExperimental = GL_TRUE;
+    if (glewInit() != GLEW_OK) {
+        std::cerr << "GLEW init failed\n";
+        return false;
+    }
+
+    if (BufferingMode == 3)
+    {
+        if (!initTripleBuffer())
+            return false;
+    }
+
+    SDL_GL_SetSwapInterval(1);
 
     if (depthBufferOn) {
         glEnable(GL_DEPTH_TEST);
@@ -156,15 +169,93 @@ void Engine::kbmEvents() {
 
 void Engine::renderFrame()
 {
+
+    if (BufferingMode == 3)
+    {
+        renderToTripleBuffer();
+    }
+    else
+    {
+        renderToBackBuffer();
+    }
+
+
+}
+
+
+void Engine::renderToBackBuffer()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glViewport(0, 0, width, height);
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    renderScene(); 
+    SDL_GL_SwapWindow(window);
+}
+
+void Engine::renderToTripleBuffer()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, buffers[drawIndex].fbo);
+    glViewport(0, 0, width, height);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    renderScene();
+
+    rotateTripleBuffers();
+    presentTripleBuffer();
+}
+
+
+void Engine::rotateTripleBuffers()
+{
+    int oldDisplay = displayIndex;
+    displayIndex = readyIndex;
+    readyIndex = drawIndex;
+    drawIndex = oldDisplay;
+}
+
+void Engine::presentTripleBuffer()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glViewport(0, 0, width, height);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0, 1, 0, 1, -1, 1);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    glDisable(GL_LIGHTING);
+    glEnable(GL_TEXTURE_2D);
+
+    glBindTexture(GL_TEXTURE_2D, buffers[displayIndex].texture);
+
+    glBegin(GL_QUADS);
+    glTexCoord2f(0, 0); glVertex2f(0, 0);
+    glTexCoord2f(1, 0); glVertex2f(1, 0);
+    glTexCoord2f(1, 1); glVertex2f(1, 1);
+    glTexCoord2f(0, 1); glVertex2f(0, 1);
+    glEnd();
+
+    glDisable(GL_TEXTURE_2D);
+    glEnable(GL_LIGHTING);
+
+    SDL_GL_SwapWindow(window);
+}
+
+
+void Engine::renderScene()
+{
     glShadeModel(shadingMode == 0 ? GL_FLAT : GL_SMOOTH);
 
     if (projectionMode == 0)
         setPerspective(70.0f, 0.1f, 1000.0f);
     else
         setOrtho(-10, 10, -10, 10, -100, 100);
-
 
     glMatrixMode(GL_MODELVIEW);
     camera.setPostion({ 0, 2, 15 });
@@ -186,10 +277,41 @@ void Engine::renderFrame()
     c3.translate({ -10, 0, 0 });
     c3.rotate(SDL_GetTicks() * 0.1f, { 0,1,0 });
     c3.draw();
-
-    SDL_GL_SwapWindow(window);
 }
 
+
+bool Engine::initTripleBuffer() 
+{
+    for (int i = 0; i < BufferCount; i++)
+    {
+        glGenFramebuffers(1, &buffers[i].fbo);
+        glBindFramebuffer(GL_FRAMEBUFFER, buffers[i].fbo);
+
+        glGenTextures(1, &buffers[i].texture);
+        glBindTexture(GL_TEXTURE_2D, buffers[i].texture);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, buffers[i].texture, 0);
+
+        glGenRenderbuffers(1, &buffers[i].depth);
+        glBindRenderbuffer(GL_RENDERBUFFER, buffers[i].depth);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, buffers[i].depth);
+
+        if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        {
+            std::cerr << "FBO error\n";
+            return false;
+        }
+    }
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    return true;
+}
 
 void Engine::setPerspective(float fov, float nearZ, float farZ) {
     glm::mat4 projection = glm::perspective(glm::radians(70.0f), (float)width / (float)height, 0.1f, 1000.0f);
