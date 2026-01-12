@@ -277,6 +277,59 @@ void Engine::renderScene()
     c3.translate({ -10, 0, 0 });
     c3.rotate(SDL_GetTicks() * 0.1f, { 0,1,0 });
     c3.draw();
+
+    Vertex q1({ -2.0f, -2.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 1.0f, 0.0f, 0.0f });
+    Vertex q2({ 2.0f, -2.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 1.0f, 0.0f, 0.0f });
+    Vertex q3({ 2.0f,  2.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 1.0f, 0.0f, 0.0f });
+    Vertex q4({ -2.0f,  2.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 1.0f, 0.0f, 0.0f });
+
+    Quad quad(q1, q2, q3, q4);
+    quad.translate({ 10, 5, 0 });
+    quad.draw();
+
+    Vertex t1({ -2.0f, -2.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 0.0f, 1.0f, 0.0f });
+    Vertex t2({ 2.0f, -2.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 0.0f, 1.0f, 0.0f });
+    Vertex t3({ 0.0f,  2.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 0.0f, 1.0f, 0.0f });
+
+    Triangle tri(t1, t2, t3);
+    tri.translate({ -10, 5, 0 });
+    tri.draw();
+
+    Vertex f1({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 1.0f });
+    Vertex f2({ 3.0f,  0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 1.0f });
+    Vertex f3({ 2.0f,  2.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 1.0f });
+    Vertex f4({ -2.0f,  2.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 1.0f });
+
+    TriangleFan fan({f1, f2, f3, f4});
+    fan.translate({ 0, 5, 0 });
+    fan.draw();
+
+    Vertex s1({ -2.0f, -2.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 1.0f, 1.0f, 0.0f });
+    Vertex s2({ -2.0f,  2.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 1.0f, 1.0f, 0.0f });
+    Vertex s3({ 0.0f, -2.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 1.0f, 1.0f, 0.0f });
+    Vertex s4({ 0.0f,  2.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 1.0f, 1.0f, 0.0f });
+
+    TriangleStrip strip({ s1, s2, s3, s4});
+    strip.translate({ 0, -5, 0 });
+    strip.draw();
+
+    Vertex p1({ -2.0f,  0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 1.0f, 0.0f, 1.0f });
+    Vertex p2({ 0.0f,  2.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 1.0f, 0.0f, 1.0f });
+    Vertex p3({ 2.0f,  0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 1.0f, 0.0f, 1.0f });
+
+    Polylines polylines({ p1, p2, p3 });
+    polylines.translate({ 10, -5, 0 });
+    polylines.draw();
+
+    Vertex l1({ -2.0f, -2.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 0.0f, 1.0f, 1.0f });
+    Vertex l2({ 2.0f,  2.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 0.0f, 1.0f, 1.0f });
+
+    Line line(l1, l2);
+    line.translate({ -10, -5, 0 });
+    line.draw();
+
+
+
 }
 
 

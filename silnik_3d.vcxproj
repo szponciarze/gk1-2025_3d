@@ -96,6 +96,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>G:\SDL2\include;C:\SDL2\include;$(IncludePath)</IncludePath>
     <ReferencePath>G:\SDL2\lib\x64;C:\SDL2\lib\x64;$(ReferencePath)</ReferencePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
