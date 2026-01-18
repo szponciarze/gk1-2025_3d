@@ -12,7 +12,8 @@
 #include "TriangleFan.h"
 #include "Quad.h"
 #include "Cube.h"
-
+#include "BitmapHandler.h"
+#include "TexturedCube.h"
 
 
 bool Engine::init(const std::string& windowtitle, int x, int y, int w, int h, bool Fullscreen, bool mouseOn, bool keyboardOn, int targetFPS, bool depthBufferOn, int BufferingMode)
@@ -83,6 +84,8 @@ bool Engine::init(const std::string& windowtitle, int x, int y, int w, int h, bo
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 
     shadingMode = 1;
+
+    myTextureID = BitmapHandler::loadTexture("tekstura.jpg");
 
     isRunning = true;
     return true;
@@ -264,9 +267,10 @@ void Engine::renderScene()
 
     setupLight();
 
-    Cube c1(3.0f);
-    c1.rotate(SDL_GetTicks() * 0.05f, { 1,1,0 });
-    c1.draw();
+    TexturedCube texCube(5.0f, myTextureID);
+    texCube.rotate(SDL_GetTicks() * 0.05f, { 1, 1, 0 });
+    texCube.draw();
+  
 
     Cube c2(2.0f);
     c2.translate({ 10, 0, 0 });

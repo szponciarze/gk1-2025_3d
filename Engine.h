@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include "Camera.h"
+#include "BitmapHandler.h"
 
 struct TripleBuffering
 {
@@ -38,6 +39,7 @@ private:
     int readyIndex = 1;
     int displayIndex = 2;
     int BufferingMode=2;
+    GLuint myTextureID;
 
 
 public:
@@ -65,5 +67,6 @@ public:
 
 
     void clean();
+   
 
 };
