@@ -390,7 +390,7 @@ void Engine::setOrtho(float left, float right, float bottom, float top, float ne
 
 void Engine::setupLight()
 {
-    GLfloat lightPos[] = { 0.0f, -5.0f, 10.0f, 1.0f };
+    GLfloat lightPos[] = {0.0f, -5.0f, 10.0f, 1.0f };
     GLfloat lightDiffuse[] = { 0.8f, 0.8f, 0.8f, 1.0f };
     GLfloat lightSpecular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
     GLfloat lightAmbient[] = { 0.2f, 0.2f, 0.2f, 1.0f };
