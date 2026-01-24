@@ -1,9 +1,25 @@
 #pragma once
 #include "Primitive.h"
 
+/**
+ * @brief Klasa reprezentuj¹ca prymityw punktu.
+ * 
+ * Dziedziczy po klasie Primitive i implementuje metodê rysowania punktu.
+ */
 class Point : public Primitive {
 public:
+    /**
+     * @brief Konstruktor klasy Point.
+     * 
+     * Inicjalizuje prymityw z pojedynczym wierzcho³kiem.
+     * 
+     * @param v Wierzcho³ek reprezentuj¹cy punkt.
+	 */
     Point(const Vertex& v) { vertices.push_back(v); }
+
+    /**
+	* @brief Implementacja metody rysowania punktu.
+    **/    
     void draw() override {
         glPushMatrix();
         glMultMatrixf(glm::value_ptr(modelMatrix));

@@ -1,13 +1,30 @@
 #pragma once
 #include "Primitive.h"
-
+/**
+ * @brief Klasa reprezentuj¹ca trójk¹t.
+ * 
+ * Dziedziczy po klasie Primitive i implementuje metodê rysowania trójk¹ta.
+ */
 class Triangle : public Primitive {
 public:
+    /**
+     * @brief Konstruktor klasy Triangle.
+     *
+     * Inicjalizuje trójk¹t z trzema wierzcho³kami.
+     * 
+     * @param v1 Pierwszy wierzcho³ek trójk¹ta.
+     * @param v2 Drugi wierzcho³ek trójk¹ta.
+     * @param v3 Trzeci wierzcho³ek trójk¹ta.
+     * 
+	 **/
     Triangle(const Vertex& v1, const Vertex& v2, const Vertex& v3) {
         vertices.push_back(v1);
         vertices.push_back(v2);
         vertices.push_back(v3);
     }
+    /**
+	* @brief Implementacja metody rysowania trójk¹ta.
+    **/
     void draw() override {
         glPushMatrix();
         glMultMatrixf(glm::value_ptr(modelMatrix));

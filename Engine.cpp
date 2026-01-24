@@ -289,6 +289,7 @@ void Engine::renderScene()
 
     Quad quad(q1, q2, q3, q4);
     quad.translate({ 10, 5, 0 });
+    quad.rotate(SDL_GetTicks() * 0.05f, { 1, 0, 0 });
     quad.draw();
 
     Vertex t1({ -2.0f, -2.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 0.0f, 1.0f, 0.0f });
@@ -297,6 +298,7 @@ void Engine::renderScene()
 
     Triangle tri(t1, t2, t3);
     tri.translate({ -10, 5, 0 });
+    tri.rotate(SDL_GetTicks() * 0.05f, { 0, 1, 0 });
     tri.draw();
 
     Vertex f1({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 1.0f });
@@ -306,6 +308,7 @@ void Engine::renderScene()
 
     TriangleFan fan({f1, f2, f3, f4});
     fan.translate({ 0, 5, 0 });
+    fan.rotate(SDL_GetTicks() * 0.05f, { 0, 0, 1 });
     fan.draw();
 
     Vertex s1({ -2.0f, -2.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 1.0f, 1.0f, 0.0f });
@@ -315,6 +318,7 @@ void Engine::renderScene()
 
     TriangleStrip strip({ s1, s2, s3, s4});
     strip.translate({ 0, -5, 0 });
+	strip.scale({ 0.5f, 0.5f, 0.5f });
     strip.draw();
 
     Vertex p1({ -2.0f,  0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 1.0f, 0.0f, 1.0f });
