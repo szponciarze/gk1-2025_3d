@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BitmapHandler.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="DrawableObject.h" />
@@ -30,16 +31,19 @@
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="ShapeObject.h" />
+    <ClInclude Include="TexturedCube.h" />
     <ClInclude Include="TransformableObject.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="TriangleFan.h" />
     <ClInclude Include="TriangleStrip.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BitmapHandler.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="TexturedCube.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -96,7 +100,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>G:\SDL2\include;C:\SDL2\include;$(IncludePath)</IncludePath>
     <ReferencePath>G:\SDL2\lib\x64;C:\SDL2\lib\x64;$(ReferencePath)</ReferencePath>
-    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
