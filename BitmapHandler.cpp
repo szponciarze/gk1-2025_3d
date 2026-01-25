@@ -3,6 +3,7 @@
 #include "BitmapHandler.h"
 #include <iostream>
 
+
 GLuint BitmapHandler::loadTexture(const std::string& filename) {
     int width, height, nrChannels;
     stbi_set_flip_vertically_on_load(true);

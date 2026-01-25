@@ -1,5 +1,27 @@
+/**
+ * @file Cube.cpp
+ * @brief Implementacja klasy Cube.
+ *
+ * Plik zawiera definicjê konstruktora oraz funkcji rysuj¹cej
+ * szeœcian 3D z u¿yciem klasycznego OpenGL (fixed pipeline).
+ */
+
 #include "Cube.h"
 
+
+ /**
+  * @brief Tworzy szeœcian o zadanym rozmiarze.
+  *
+  * Konstruktor generuje wierzcho³ki szeœcianu wraz z:
+  * - pozycjami w przestrzeni 3D
+  * - wektorami normalnymi (do oœwietlenia)
+  * - kolorami wierzcho³ków
+  *
+  * Ka¿da œciana posiada osobne wierzcho³ki,
+  * co umo¿liwia poprawne obliczanie oœwietlenia.
+  *
+  * @param size D³ugoœæ krawêdzi szeœcianu
+  */
 Cube::Cube(float size)
 {
     float h = size / 2.0f;
@@ -51,6 +73,18 @@ Cube::Cube(float size)
     };
 }
 
+
+/**
+ * @brief Rysuje szeœcian w aktualnej scenie.
+ *
+ * Funkcja:
+ * - aplikuje macierz modelu
+ * - ustawia wskaŸniki tablic wierzcho³ków, normalnych i kolorów
+ * - rysuje szeœcian z u¿yciem indeksów
+ *
+ * Wykorzystuje mechanizm OpenGL fixed pipeline
+ * (glVertexPointer, glNormalPointer, glDrawElements).
+ */
 void Cube::draw()
 {
     glPushMatrix();

@@ -1,3 +1,14 @@
+/**
+ * @file Engine.cpp
+ * @brief Implementacja g³ównej klasy silnika 3D.
+ *
+ * Plik zawiera implementacjê inicjalizacji silnika,
+ * obs³ugi pêtli g³ównej, renderowania sceny 3D,
+ * oœwietlenia, buforowania (double/triple buffering)
+ * oraz zarz¹dzania kamer¹ i projekcj¹.
+ */
+
+
 #include "Engine.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/glm/glm.hpp"
@@ -15,7 +26,26 @@
 #include "BitmapHandler.h"
 #include "TexturedCube.h"
 
-
+ /**
+  * @brief Inicjalizuje silnik 3D i kontekst OpenGL.
+  *
+  * Tworzy okno SDL, kontekst OpenGL, inicjalizuje GLEW,
+  * ustawia tryb buforowania (double lub triple),
+  * konfiguruje oœwietlenie, test g³êbi oraz ³aduje tekstury.
+  *
+  * @param windowtitle Tytu³ okna
+  * @param x Pozycja okna X
+  * @param y Pozycja okna Y
+  * @param w Szerokoœæ okna
+  * @param h Wysokoœæ okna
+  * @param Fullscreen Tryb pe³noekranowy
+  * @param mouseOn Obs³uga myszy
+  * @param keyboardOn Obs³uga klawiatury
+  * @param targetFPS Docelowa liczba FPS
+  * @param depthBufferOn W³¹czenie bufora g³êbi
+  * @param BufferingMode Tryb buforowania (2 – double, 3 – triple)
+  * @return true jeœli inicjalizacja zakoñczy³a siê sukcesem
+  */
 bool Engine::init(const std::string& windowtitle, int x, int y, int w, int h, bool Fullscreen, bool mouseOn, bool keyboardOn, int targetFPS, bool depthBufferOn, int BufferingMode)
 {
     this->width = w;
@@ -92,6 +122,12 @@ bool Engine::init(const std::string& windowtitle, int x, int y, int w, int h, bo
 
 }
 
+/**
+ * @brief G³ówna pêtla programu.
+ *
+ * Obs³uguje zdarzenia, renderowanie
+ * oraz synchronizacjê FPS.
+ */
 void Engine::mainLoop() {
     lastTime = SDL_GetTicks();
     while (isRunning) {
@@ -110,6 +146,12 @@ void Engine::mainLoop() {
 
 }
 
+/**
+ * @brief Obs³uguje zdarzenia klawiatury i myszy.
+ *
+ * Umo¿liwia zmianê rzutowania, trybu cieniowania,
+ * poruszanie kamer¹ oraz obs³ugê zdarzeñ zamkniêcia okna.
+ */
 void Engine::kbmEvents() {
     SDL_Event e;
 
@@ -170,6 +212,13 @@ void Engine::kbmEvents() {
     }
 }
 
+/**
+ * @brief Renderuje pojedyncz¹ klatkê.
+ *
+ * W zale¿noœci od wybranego trybu buforowania
+ * renderuje scenê do bufora tylnego lub do
+ * potrójnego bufora (FBO).
+ */
 void Engine::renderFrame()
 {
 
@@ -185,7 +234,11 @@ void Engine::renderFrame()
 
 }
 
-
+/**
+ * @brief Renderuje scenê bezpoœrednio do tylnego bufora.
+ *
+ * U¿ywany w trybie podwójnego buforowania (double buffering).
+ */
 void Engine::renderToBackBuffer()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -197,6 +250,11 @@ void Engine::renderToBackBuffer()
     SDL_GL_SwapWindow(window);
 }
 
+/**
+ * @brief Renderuje scenê do aktualnego bufora FBO.
+ *
+ * Funkcja wykorzystywana w trybie potrójnego buforowania.
+ */
 void Engine::renderToTripleBuffer()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, buffers[drawIndex].fbo);
@@ -210,7 +268,12 @@ void Engine::renderToTripleBuffer()
     presentTripleBuffer();
 }
 
-
+/**
+ * @brief Rotuje indeksy buforów potrójnego buforowania.
+ *
+ * Bufor rysowania staje siê buforem gotowym,
+ * gotowy staje siê wyœwietlanym itd.
+ */
 void Engine::rotateTripleBuffers()
 {
     int oldDisplay = displayIndex;
@@ -219,6 +282,12 @@ void Engine::rotateTripleBuffers()
     drawIndex = oldDisplay;
 }
 
+
+/**
+ * @brief Wyœwietla aktualny bufor z potrójnego buforowania.
+ *
+ * Renderuje teksturê z FBO na pe³noekranowy quad.
+ */
 void Engine::presentTripleBuffer()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -250,7 +319,13 @@ void Engine::presentTripleBuffer()
     SDL_GL_SwapWindow(window);
 }
 
-
+/**
+ * @brief Renderuje ca³¹ scenê 3D.
+ *
+ * Ustawia projekcjê, kamerê, oœwietlenie,
+ * tryb cieniowania oraz rysuje wszystkie obiekty
+ * geometryczne i teksturowane.
+ */
 void Engine::renderScene()
 {
     glShadeModel(shadingMode == 0 ? GL_FLAT : GL_SMOOTH);
@@ -340,7 +415,14 @@ void Engine::renderScene()
 
 }
 
-
+/**
+ * @brief Inicjalizuje potrójne buforowanie (Triple Buffering).
+ *
+ * Tworzy trzy bufory ramki (FBO) wraz z teksturami
+ * kolorów oraz buforami g³êbi.
+ *
+ * @return true jeœli inicjalizacja siê powiod³a
+ */
 bool Engine::initTripleBuffer() 
 {
     for (int i = 0; i < BufferCount; i++)
@@ -374,6 +456,13 @@ bool Engine::initTripleBuffer()
     return true;
 }
 
+/**
+ * @brief Ustawia rzutowanie perspektywiczne.
+ *
+ * @param fov K¹t widzenia
+ * @param nearZ P³aszczyzna bliska
+ * @param farZ P³aszczyzna daleka
+ */
 void Engine::setPerspective(float fov, float nearZ, float farZ) {
     glm::mat4 projection = glm::perspective(glm::radians(70.0f), (float)width / (float)height, 0.1f, 1000.0f);
 
@@ -382,12 +471,29 @@ void Engine::setPerspective(float fov, float nearZ, float farZ) {
     glLoadMatrixf(glm::value_ptr(projection));
 }
 
+
+/**
+ * @brief Ustawia rzutowanie ortograficzne.
+ *
+ * @param left Lewa granica
+ * @param right Prawa granica
+ * @param bottom Dolna granica
+ * @param top Górna granica
+ * @param nearZ P³aszczyzna bliska
+ * @param farZ P³aszczyzna daleka
+ */
 void Engine::setOrtho(float left, float right, float bottom, float top, float nearZ, float farZ) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(left, right, bottom, top, nearZ, farZ);
 }
 
+/**
+ * @brief Konfiguruje Ÿród³o œwiat³a w scenie.
+ *
+ * Ustawia pozycjê œwiat³a, sk³adowe ambient,
+ * diffuse, specular oraz parametry t³umienia.
+ */
 void Engine::setupLight()
 {
     GLfloat lightPos[] = {0.0f, -5.0f, 10.0f, 1.0f };
@@ -405,11 +511,25 @@ void Engine::setupLight()
     glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.001f);
 }
 
-
+/**
+ * @brief Ustawia kolor czyszczenia ekranu.
+ *
+ * @param r Sk³adowa czerwona
+ * @param g Sk³adowa zielona
+ * @param b Sk³adowa niebieska
+ * @param a Kana³ alfa
+ */
 void Engine::clearScreen(float r, float g, float b, float a) {
     glClearColor(r, g, b, a);
 }
 
+
+/**
+ * @brief Zwalnia zasoby silnika.
+ *
+ * Usuwa kontekst OpenGL, niszczy okno SDL
+ * i koñczy dzia³anie biblioteki SDL.
+ */
 void Engine::clean() {
     if (glContext) {
         SDL_GL_DeleteContext(glContext);
