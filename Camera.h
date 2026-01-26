@@ -1,3 +1,8 @@
+/**
+ * @file Camera.h
+ * @brief Klasa reprezentuj¹ca kamerê.
+ */
+
 #pragma once
 #include <glm/glm/glm.hpp>
 #include <glm/glm/gtc/matrix_transform.hpp>

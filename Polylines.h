@@ -1,3 +1,10 @@
+/**
+ * @file Polylines.h
+ * @brief Klasa reprezentuj¹ca wielok¹ty.
+ */
+
+
+
 #pragma once
 #include "Primitive.h"
 

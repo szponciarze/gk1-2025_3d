@@ -1,3 +1,10 @@
+/**
+ * @file Point.h
+ * @brief Klasa reprezentuj¹ca prymityw punktu.
+ */
+
+
+
 #pragma once
 #include "Primitive.h"
 

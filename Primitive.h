@@ -1,3 +1,10 @@
+/**
+ * @file Primitive.h
+ * @brief Klasa bazowa dla prymitywnych obiektów 3D.
+ */
+
+
+
 #pragma once
 #include <vector>
 #include <SDL_opengl.h>

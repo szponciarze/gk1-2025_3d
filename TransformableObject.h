@@ -1,3 +1,10 @@
+/**
+ * @file TransformableObject.h
+ * @brief Abstrakcyjna klasa bazowa dla obiektów mo¿liwych do transformacji.
+ */
+
+
+
 #pragma once
 #include "GameObject.h"
 #include <glm/glm/glm.hpp>

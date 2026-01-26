@@ -1,3 +1,10 @@
+/**
+ * @file Triangle.h
+ * @brief Klasa reprezentuj¹ca trójk¹t.
+ */
+
+
+
 #pragma once
 #include "Primitive.h"
 /**

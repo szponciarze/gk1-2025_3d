@@ -1,3 +1,10 @@
+/**
+ * @file Line.h
+ * @brief Klasa reprezentuj¹ca liniê.
+ */
+
+
+
 #pragma once
 #include "Primitive.h"
 

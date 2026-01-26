@@ -1,3 +1,10 @@
+/**
+ * @file ShapeObject.h
+ * @brief Klasa reprezentuj¹ca obiekt dziedzicz¹ca po DrawableObject i TransformableObject.
+ */
+
+
+
 #pragma once
 #include "DrawableObject.h"
 #include "TransformableObject.h"

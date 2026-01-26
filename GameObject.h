@@ -1,3 +1,9 @@
+/**
+ * @file GameObject.h
+ * @brief Bazowa klasa dla wszystkich obiektów w grze.
+ */
+
+
 #pragma once
 /**
  * @brief Bazowa klasa dla wszystkich obiektów w grze.

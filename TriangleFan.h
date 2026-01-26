@@ -1,3 +1,10 @@
+/**
+ * @file TriangleFan.h
+ * @brief Klasa reprezentuj¹ca wachlarz trójk¹tów.
+ */
+
+
+
 #pragma once
 #include "Primitive.h"
 /**

@@ -1,3 +1,10 @@
+/**
+ * @file Quad.h
+ * @brief Klasa reprezentuj¹ca czworok¹t.
+ */
+
+
+
 #pragma once
 #include "Primitive.h"
 /**

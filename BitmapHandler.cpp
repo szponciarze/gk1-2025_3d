@@ -1,3 +1,8 @@
+/**
+ * @file BitmapHandler.cpp
+ * @brief Implementacja klasy BitmapHandler.
+ */
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include "BitmapHandler.h"

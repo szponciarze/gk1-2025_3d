@@ -1,3 +1,10 @@
+/**
+ * @file TexturedCube.cpp
+ * @brief Implementacja klasy TexturedCube.
+ */
+
+
+
 #include "TexturedCube.h"
 #include <glm/glm/gtc/type_ptr.hpp>
 

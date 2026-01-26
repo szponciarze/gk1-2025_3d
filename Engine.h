@@ -1,3 +1,9 @@
+/**
+ * @file Engine.h
+ * @brief G³ówna klasa silnika 3D.
+ */
+
+
 #pragma once
 #include "glew/include/GL/glew.h"
 #include <SDL.h>

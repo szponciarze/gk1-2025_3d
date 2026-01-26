@@ -1,3 +1,8 @@
+/**
+ * @file DrawableObject.h
+ * @brief Abstrakcyjna klasa bazowa dla obiektów mo¿liwych do rysowania.
+ */
+
 #pragma once
 #include "GameObject.h"
 

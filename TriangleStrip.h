@@ -1,3 +1,9 @@
+/**
+ * @file TriangleStrip.h
+ * @brief Klasa reprezentuj¹ca pasek trójk¹tów.
+ */
+
+
 #pragma once
 #include "Primitive.h"
 /**

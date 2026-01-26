@@ -1,3 +1,8 @@
+/**
+ * @file Cube.h
+ * @brief Klasa reprezentuj¹ca szeœcian.
+ */
+
 #pragma once
 #include "Primitive.h"
 #include <vector>
